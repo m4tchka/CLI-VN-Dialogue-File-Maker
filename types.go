@@ -5,11 +5,6 @@ import (
 	"os"
 )
 
-type dialogueObj struct {
-	name     string
-	dialogue string
-}
-
 type bill struct {
 	name  string
 	items map[string]float64
