@@ -1,0 +1,6 @@
+Bill breakdown: 
+Cake:                     ...$15.05
+Toffee pudding:           ...$5.5
+Coffee:                   ...$8.5
+tip:                      ...$2.5
+total:                    ...$31.55

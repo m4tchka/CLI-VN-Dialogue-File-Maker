@@ -8,7 +8,8 @@ import (
 	"strings"
 )
 
-// REVIEW: FIXME: TODO: NOTE: WARNING:
+// Default highlights >>> TODO: FIXME:
+// Custom highlights >>> REVIEW: NOTE: WARNING:
 
 func getInput(prompt string, r *bufio.Reader) (string, error) {
 	fmt.Print(prompt)
@@ -68,6 +69,11 @@ func promptOptions(b bill) {
 			promptOptions(b)
 		}
 		b.updateTip(t)
+		//Passes in the tip to the update tip function.
+		/*REVIEW: The function does not need to have the address passed in, despite taking a pointer
+		Since the function updateTip is associated with the pointer to a bill i.e. func (b* bill) updateTip,
+		a COPY OF THE POINTER will be copied and passed in (instead of a copy of the variable)
+		*/
 		fmt.Println("tip added - ", tip)
 		promptOptions(b)
 		// Add the tip entry to the bill with the user-inputted tip, then reprompt the user
