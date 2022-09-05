@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 type dialogueObj struct {
 	name     string
@@ -38,12 +41,22 @@ func (b *bill) format() string {
 	return fs
 }
 
-//update tip
+// update tip
 func (b *bill) updateTip(tip float64) {
 	b.tip = tip
 }
 
-//add item to bill
+// add item to bill
 func (b *bill) addItem(newItem string, price float64) {
 	b.items[newItem] = price
+}
+
+// save bill
+func (b *bill) save() {
+	data := []byte(b.format())
+	err := os.WriteFile("bills/"+b.name+".js", data, 0644)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Bill was saved to file")
 }

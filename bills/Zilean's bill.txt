@@ -1,0 +1,6 @@
+Bill breakdown: 
+vanilla muffin:           ...$0.8
+strawberry milkshake:     ...$1.2
+triple-scoop ice cream:   ...$3.5
+tip:                      ...$1
+total:                    ...$6.50
