@@ -84,8 +84,19 @@ func promptOptions(b bill) {
 		// Inform the user the option they submitted was invalid, then reprompt the user
 	}
 }
-func main() {
+func mainx() {
 	myBill := createBill()
 	// Call the createBill function, then prompt the user to perform 1 of 3 options regarding that bill
 	promptOptions(myBill)
 }
+
+/*
+	Running order:
+	createBill - returns bill
+		calls getInput to get name
+	promptOptions(bill)
+		calls getInput to get user choice of action - Assuming user chooses a -> t -> s:
+
+
+
+*/
