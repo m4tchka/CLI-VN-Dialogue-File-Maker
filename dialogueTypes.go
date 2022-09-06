@@ -2,8 +2,8 @@ package main
 
 // type chObj struct {}
 type SceneObj struct {
-	id    int
-	scene SceneArr
+	id    int      `json:"id"`
+	scene SceneArr `json:"Scene"`
 }
 type SceneArr struct {
 	Scene []DialogueObj `json:"Scene"`
