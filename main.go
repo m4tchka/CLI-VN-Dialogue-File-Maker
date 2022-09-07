@@ -31,4 +31,17 @@ Within that, add an id and create a scene slice
 			Add OptionObj1 to Options slice field of current DialogueObj
 			Repeat for remaining number of OptionObjs
 */
+
+/*
+	Running order:
+
+newSceneObj()
+  - Prompts user for id
+  - Creates a new sceneArr slice
+  - Creates new DialogueObj
+  - Appends that to the sceneArr slice
+  - Prompt user for more DialogueObjs
+  - If yes, reprompt for Name,Dialogue and make a new obj and append (repeatedly)
+  - If no,
+*/
 package main

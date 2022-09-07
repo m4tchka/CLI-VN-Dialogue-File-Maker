@@ -9,7 +9,7 @@ type SceneArr struct {
 	Scene []DialogueObj `json:"Scene"`
 }
 type DialogueObj struct {
-	// Only Name & Dialogue fields mandatory
+	// Only Name & Dialogue fields mandatory, rest will remain as empty strings/ slice until conversion to JSON upon where they will be removed.
 	Name       string      `json:"Name"`
 	Dialogue   string      `json:"Dialogue"`
 	Background string      `json:"Background,omitempty"`

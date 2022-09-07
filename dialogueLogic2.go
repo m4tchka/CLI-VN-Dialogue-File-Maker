@@ -48,10 +48,17 @@ func newDialogueObj() DialogueObj {
 	fmt.Println(dObj)
 	return dObj
 }
-func newSceneArr() {
+func newSceneArr() SceneArr {
 	sArr := SceneArr{}
+	newDialogueObj()
+	sArr.Scene = append(sArr.Scene, newDialogueObj())
+
+	return sArr
+}
+func optionsPrompt() {
+
 }
 func main() {
-	/* newDialogueObj() */
+	newDialogueObj()
 	/* newSceneObj() */
 }

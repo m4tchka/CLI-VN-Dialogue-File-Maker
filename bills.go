@@ -90,13 +90,22 @@ func mainx() {
 	promptOptions(myBill)
 }
 
-/*
-	Running order:
+/*	Running order:
 	createBill - returns bill
 		calls getInput to get name
 	promptOptions(bill)
 		calls getInput to get user choice of action - Assuming user chooses a -> t -> s:
-
-
-
+	user enters "a"
+	calls getInput 2x to get name and price
+		casts price to p float64
+	bill.addItem(name,p)
+	promptOptions(bill)
+	user enters "t"
+	calls getInput to get tip
+		casts tip to t float64
+	bill.updateTip(t)
+	promptOptions(bill)
+	user enters "s"
+	bill.saveBill()
+	bill is created and saved
 */
