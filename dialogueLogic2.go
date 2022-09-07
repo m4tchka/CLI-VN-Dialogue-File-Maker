@@ -11,9 +11,7 @@ import (
 func getInputX(prompt string, r *bufio.Reader) (string, error) {
 	fmt.Print(prompt)
 	input, err := r.ReadString('\n')
-	//Returns everything typed into the terminal, as a string, right before enter is pressed. Must be in SINGLE quotes, and assign it to the variable name (or error if there is an error).
 	return strings.TrimSpace(input), err
-	//Update the name variable with whitespace removed
 }
 func newSceneObj(sA SceneArr) SceneObj {
 	reader := bufio.NewReader(os.Stdin)
@@ -28,9 +26,7 @@ func newSceneObj(sA SceneArr) SceneObj {
 	return nSO
 }
 func newSceneArr(dOS []DialogueObj) SceneArr {
-	sArr := SceneArr{}
-	newDialogueObj()
-	sArr.Scene = dOS
+	sArr := SceneArr{Scene: dOS}
 	return sArr
 }
 func newDialogueObjSlice() []DialogueObj {
@@ -57,12 +53,11 @@ func main() {
 	fmt.Printf("newDOS = %v, of type = %T\n", newDOS, newDOS)
 	finalDOS := optionsPrompt(newDOS)
 	fmt.Printf("finalDOS = %v, of type: %T\n", finalDOS, finalDOS)
+
 	nSA := newSceneArr(finalDOS)
 	fmt.Printf("nSA = %v, of type: %T\n", nSA, nSA)
 	nSO := newSceneObj(nSA)
 	fmt.Printf("nSO = %v, of type: %T\n", nSO, nSO)
-	/* newDialogueObj() */
-	/* newSceneObj() */
 }
 func optionsPrompt(dOS []DialogueObj) []DialogueObj {
 	reader := bufio.NewReader(os.Stdin)
@@ -70,15 +65,13 @@ func optionsPrompt(dOS []DialogueObj) []DialogueObj {
 	switch opt {
 	case "a":
 		new := appendToSlice(dOS)
-		optionsPrompt(new)
+		return optionsPrompt(new)
 	case "s":
 		fmt.Println("Implemented soon (tm) !")
 		fmt.Println("Returning slice of dObjs:", dOS)
 		return dOS
 	default:
 		fmt.Println("Invalid option !")
-		optionsPrompt(dOS)
+		return optionsPrompt(dOS)
 	}
-	fmt.Println("How did you get here !?")
-	return dOS
 }
