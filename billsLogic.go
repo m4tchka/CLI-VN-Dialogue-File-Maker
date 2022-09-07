@@ -6,7 +6,7 @@ import (
 )
 
 type bill struct {
-	//Define a bill struct (basically an js object) with 3 "fields"(keys)
+	//Define a bill struct (basically a js object) with 3 "fields"(keys)
 	name  string
 	items map[string]float64
 	tip   float64

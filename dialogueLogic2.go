@@ -45,7 +45,6 @@ func newSceneArr() SceneArr {
 	sArr := SceneArr{}
 	newDialogueObj()
 	sArr.Scene = append(sArr.Scene, newDialogueObj())
-
 	return sArr
 }
 func newDialogueObjSlice() []DialogueObj {
@@ -68,9 +67,27 @@ func newDialogueObj() DialogueObj {
 	return dObj
 }
 func main() {
-	var test []DialogueObj
-	test2 := appendToSlice(test)
-	fmt.Println("test2: ", test2)
+	test3 := newDialogueObjSlice()
+	test4 := optionsPrompt(test3)
+	fmt.Printf("test2: %v, of type: %T", test4, test4)
 	/* newDialogueObj() */
 	/* newSceneObj() */
+}
+func optionsPrompt(dOS []DialogueObj) []DialogueObj {
+	reader := bufio.NewReader(os.Stdin)
+	opt, _ := getInputX("Choose option (a - add new dialogue entry to scene, s - save scene): ", reader)
+	switch opt {
+	case "a":
+		new := appendToSlice(dOS)
+		optionsPrompt(new)
+	case "s":
+		fmt.Println("Implemented soon (tm) !")
+		fmt.Println("Returning slice of dObjs:", dOS)
+		return dOS
+	default:
+		fmt.Println("Invalid option !")
+		optionsPrompt(dOS)
+	}
+	fmt.Println("How did you get here !?")
+	return dOS
 }
