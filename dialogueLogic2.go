@@ -24,6 +24,7 @@ func newSceneObj(SArr SceneArr) {
 	if err != nil {
 		fmt.Println("Must be a number")
 	}
+
 	var nSO SceneObj = SceneObj{id: idNum, scene: SArr}
 	fmt.Println(nSO)
 	/*
@@ -40,6 +41,24 @@ func newSceneObj(SArr SceneArr) {
 		   	}
 	*/
 }
+func newSceneArr() SceneArr {
+	sArr := SceneArr{}
+	newDialogueObj()
+	sArr.Scene = append(sArr.Scene, newDialogueObj())
+
+	return sArr
+}
+func newDialogueObjSlice() []DialogueObj {
+	var DObjSlice []DialogueObj
+	firstDObj := newDialogueObj()
+	DObjSlice = append(DObjSlice, firstDObj)
+	return DObjSlice
+}
+func appendToSlice(prev []DialogueObj) []DialogueObj {
+	dObjToBeAppended := newDialogueObj()
+	new := append(prev, dObjToBeAppended)
+	return new
+}
 func newDialogueObj() DialogueObj {
 	reader := bufio.NewReader(os.Stdin)
 	n, _ := getInputX("Enter name: ", reader)
@@ -48,17 +67,10 @@ func newDialogueObj() DialogueObj {
 	fmt.Println(dObj)
 	return dObj
 }
-func newSceneArr() SceneArr {
-	sArr := SceneArr{}
-	newDialogueObj()
-	sArr.Scene = append(sArr.Scene, newDialogueObj())
-
-	return sArr
-}
-func optionsPrompt() {
-
-}
 func main() {
-	newDialogueObj()
+	var test []DialogueObj
+	test2 := appendToSlice(test)
+	fmt.Println("test2: ", test2)
+	/* newDialogueObj() */
 	/* newSceneObj() */
 }
