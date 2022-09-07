@@ -15,67 +15,58 @@ func getInputX(prompt string, r *bufio.Reader) (string, error) {
 	return strings.TrimSpace(input), err
 	//Update the name variable with whitespace removed
 }
-func newSceneObj(SArr SceneArr) {
+func newSceneObj(sA SceneArr) SceneObj {
 	reader := bufio.NewReader(os.Stdin)
 	id, _ := getInputX("Input an id for this scene: ", reader)
 	idNum64, err := strconv.ParseInt(id, 10, 0)
 	idNum := int(idNum64)
-	/* 	var abc int = 50 */
 	if err != nil {
 		fmt.Println("Must be a number")
 	}
-
-	var nSO SceneObj = SceneObj{id: idNum, scene: SArr}
+	var nSO SceneObj = SceneObj{id: idNum, scene: sA}
 	fmt.Println(nSO)
-	/*
-	   fmt.Printf("idNum64, %v type: %T \n", idNum64, idNum64)
-	   fmt.Printf("abc type: %T \n", abc)
-	   fmt.Printf("idNum, %v type: %T \n", idNum, idNum)
-	*/
-	/*
-		id, err := strconv.ParseInt(id, 10, 0)
-		   	//fmt.Println(id)
-		   	sObj := SceneObj{s
-		   		id:    id,
-		   		scene: SceneArr,
-		   	}
-	*/
+	return nSO
 }
-func newSceneArr() SceneArr {
+func newSceneArr(dOS []DialogueObj) SceneArr {
 	sArr := SceneArr{}
 	newDialogueObj()
-	sArr.Scene = append(sArr.Scene, newDialogueObj())
+	sArr.Scene = dOS
 	return sArr
 }
 func newDialogueObjSlice() []DialogueObj {
-	var DObjSlice []DialogueObj
-	firstDObj := newDialogueObj()
-	DObjSlice = append(DObjSlice, firstDObj)
-	return DObjSlice
+	var dOS []DialogueObj
+	dO1 := newDialogueObj()
+	dOS = append(dOS, dO1)
+	return dOS
 }
 func appendToSlice(prev []DialogueObj) []DialogueObj {
-	dObjToBeAppended := newDialogueObj()
-	new := append(prev, dObjToBeAppended)
-	return new
+	dO := newDialogueObj()
+	newDOS := append(prev, dO)
+	return newDOS
 }
 func newDialogueObj() DialogueObj {
 	reader := bufio.NewReader(os.Stdin)
 	n, _ := getInputX("Enter name: ", reader)
 	d, _ := getInputX("Enter dialogue: ", reader)
-	dObj := DialogueObj{Name: n, Dialogue: d}
-	fmt.Println(dObj)
-	return dObj
+	dO := DialogueObj{Name: n, Dialogue: d}
+	fmt.Println(dO)
+	return dO
 }
 func main() {
-	test3 := newDialogueObjSlice()
-	test4 := optionsPrompt(test3)
-	fmt.Printf("test2: %v, of type: %T", test4, test4)
+	newDOS := newDialogueObjSlice()
+	fmt.Printf("newDOS = %v, of type = %T\n", newDOS, newDOS)
+	finalDOS := optionsPrompt(newDOS)
+	fmt.Printf("finalDOS = %v, of type: %T\n", finalDOS, finalDOS)
+	nSA := newSceneArr(finalDOS)
+	fmt.Printf("nSA = %v, of type: %T\n", nSA, nSA)
+	nSO := newSceneObj(nSA)
+	fmt.Printf("nSO = %v, of type: %T\n", nSO, nSO)
 	/* newDialogueObj() */
 	/* newSceneObj() */
 }
 func optionsPrompt(dOS []DialogueObj) []DialogueObj {
 	reader := bufio.NewReader(os.Stdin)
-	opt, _ := getInputX("Choose option (a - add new dialogue entry to scene, s - save scene): ", reader)
+	opt, _ := getInputX("Choose option (a - add new dialogue entry, s - save scene): ", reader)
 	switch opt {
 	case "a":
 		new := appendToSlice(dOS)
