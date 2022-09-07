@@ -2,11 +2,8 @@ package main
 
 // type chObj struct {}
 type SceneObj struct {
-	id    int      `json:"id"`
-	scene SceneArr `json:"Scene"`
-}
-type SceneArr struct {
-	Scene []DialogueObj `json:"Scene"`
+	id    int           `json:"id"`
+	scene []DialogueObj `json:"Scene"`
 }
 type DialogueObj struct {
 	// Only Name & Dialogue fields mandatory, rest will remain as empty strings/ slice until conversion to JSON upon where they will be removed.

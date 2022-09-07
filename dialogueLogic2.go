@@ -13,7 +13,7 @@ func getInputX(prompt string, r *bufio.Reader) (string, error) {
 	input, err := r.ReadString('\n')
 	return strings.TrimSpace(input), err
 }
-func newSceneObj(sA SceneArr) SceneObj {
+func newSceneObj(dOS []DialogueObj) SceneObj {
 	reader := bufio.NewReader(os.Stdin)
 	id, _ := getInputX("Input an id for this scene: ", reader)
 	idNum64, err := strconv.ParseInt(id, 10, 0)
@@ -21,13 +21,9 @@ func newSceneObj(sA SceneArr) SceneObj {
 	if err != nil {
 		fmt.Println("Must be a number")
 	}
-	var nSO SceneObj = SceneObj{id: idNum, scene: sA}
+	var nSO SceneObj = SceneObj{id: idNum, scene: dOS}
 	fmt.Println(nSO)
 	return nSO
-}
-func newSceneArr(dOS []DialogueObj) SceneArr {
-	sArr := SceneArr{Scene: dOS}
-	return sArr
 }
 func newDialogueObjSlice() []DialogueObj {
 	var dOS []DialogueObj
@@ -53,10 +49,7 @@ func main() {
 	fmt.Printf("newDOS = %v, of type = %T\n", newDOS, newDOS)
 	finalDOS := optionsPrompt(newDOS)
 	fmt.Printf("finalDOS = %v, of type: %T\n", finalDOS, finalDOS)
-
-	nSA := newSceneArr(finalDOS)
-	fmt.Printf("nSA = %v, of type: %T\n", nSA, nSA)
-	nSO := newSceneObj(nSA)
+	nSO := newSceneObj(finalDOS)
 	fmt.Printf("nSO = %v, of type: %T\n", nSO, nSO)
 }
 func optionsPrompt(dOS []DialogueObj) []DialogueObj {
