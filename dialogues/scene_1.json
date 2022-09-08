@@ -1,0 +1,25 @@
+{
+ "id": 1,
+ "Scene": [
+  {
+   "Name": "Aiko",
+   "Dialogue": "Hello !"
+  },
+  {
+   "Name": "Aico",
+   "Dialogue": "Dynamic entry !"
+  },
+  {
+   "Name": "Aiko",
+   "Dialogue": "Ahh ! Be careful Aico"
+  },
+  {
+   "Name": "Aico",
+   "Dialogue": "Heyyyya Aiko ! Do you wanna go on a picnic with me ?"
+  },
+  {
+   "Name": "Aiko",
+   "Dialogue": "Sure, sounds like fun ! But where should we go ??"
+  }
+ ]
+}

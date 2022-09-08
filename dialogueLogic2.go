@@ -2,7 +2,9 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strconv"
 	"strings"
@@ -13,7 +15,7 @@ func getInputX(prompt string, r *bufio.Reader) (string, error) {
 	input, err := r.ReadString('\n')
 	return strings.TrimSpace(input), err
 }
-func newSceneObj(dOS []DialogueObj) SceneObj {
+func newSceneObj(dOS []DialogueObj) (SceneObj, string) {
 	reader := bufio.NewReader(os.Stdin)
 	id, _ := getInputX("Input an id for this scene: ", reader)
 	idNum64, err := strconv.ParseInt(id, 10, 0)
@@ -21,9 +23,9 @@ func newSceneObj(dOS []DialogueObj) SceneObj {
 	if err != nil {
 		fmt.Println("Must be a number")
 	}
-	var nSO SceneObj = SceneObj{id: idNum, scene: dOS}
+	var nSO SceneObj = SceneObj{Id: idNum, Scene: dOS}
 	fmt.Println(nSO)
-	return nSO
+	return nSO, id
 }
 func newDialogueObjSlice() []DialogueObj {
 	var dOS []DialogueObj
@@ -46,11 +48,14 @@ func newDialogueObj() DialogueObj {
 }
 func main() {
 	newDOS := newDialogueObjSlice()
-	fmt.Printf("newDOS = %v, of type = %T\n", newDOS, newDOS)
+	// fmt.Printf("newDOS = %v, of type = %T\n", newDOS, newDOS)
 	finalDOS := optionsPrompt(newDOS)
-	fmt.Printf("finalDOS = %v, of type: %T\n", finalDOS, finalDOS)
-	nSO := newSceneObj(finalDOS)
-	fmt.Printf("nSO = %v, of type: %T\n", nSO, nSO)
+	// fmt.Printf("finalDOS = %v, of type: %T\n", finalDOS, finalDOS)
+	nSO, id := newSceneObj(finalDOS) // NOTE: Remove id later
+	// fmt.Printf("nSO = %v, of type: %T\n", nSO, nSO)
+	fmt.Printf("id = %v, of type: %T\n", id, id)
+	scene, _ := json.MarshalIndent(nSO, "", " ")
+	_ = ioutil.WriteFile("dialogues/scene_"+id+".json", scene, 0644)
 }
 func optionsPrompt(dOS []DialogueObj) []DialogueObj {
 	reader := bufio.NewReader(os.Stdin)
