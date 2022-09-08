@@ -55,7 +55,7 @@ func main() {
 	// fmt.Printf("nSO = %v, of type: %T\n", nSO, nSO)
 	fmt.Printf("id = %v, of type: %T\n", id, id)
 	scene, _ := json.MarshalIndent(nSO, "", " ")
-	_ = ioutil.WriteFile("dialogues/scene_"+id+".json", scene, 0644)
+	_ = ioutil.WriteFile("scenes/scene_"+id+".json", scene, 0644)
 }
 func optionsPrompt(dOS []DialogueObj) []DialogueObj {
 	reader := bufio.NewReader(os.Stdin)
