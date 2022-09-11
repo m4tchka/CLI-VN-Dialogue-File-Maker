@@ -8,6 +8,8 @@ Afterwards, inspired by this, I created my own version in order to make json fil
 
 ## Detail
 
+NOTE: int is used (strconv.Atoi(string)) instead of int64; this may change 
+
 Instead of making methods which directly mutate the struct variable that they're called on, as in the bills CLI tutorial, I instead took the approach of making normal functions, which took in (copy of) a struct variable, prompted users for content to put into the fields of that struct, then prompted users if they wanted to add additional entries, of that struct type (into a slice). 
 
 <details>

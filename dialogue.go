@@ -48,7 +48,7 @@ func newDialogueObj() DialogueObj {
 }
 func addExtraFields(n string, d string) DialogueObj {
 	reader := bufio.NewReader(os.Stdin)
-	numExtraFields, _ := getInputX("Enter number of extra fields \n0 - name & dialogue only,\n1 - name, dialogue & background\n2 - name, dialogue, question, options,\n3 - name, dialogue, questions, options & background.\n: ", reader)
+	numExtraFields, _ := getInputX("Enter number of extra fields \n0 - name & dialogue only,\n1 - name, dialogue & background,\n2 - name, dialogue, question & options,\n3 - name, dialogue, question, options & background.\n: ", reader)
 	switch numExtraFields {
 	case "0":
 		dO := DialogueObj{Name: n, Dialogue: d}
@@ -66,10 +66,12 @@ func addExtraFields(n string, d string) DialogueObj {
 		}
 		nO := int(nO64)
 		if nO == 0 || nO > 8 {
-			addExtraFields(n, d)
+			return addExtraFields(n, d)
+			/* Reprompt for number of fields if invalid amount
+			- needs investigating: instead of reprompting back to the start, instead prompt for number options again.
+			But, then question, q, would be added with no options... */
 		}
 		options := newOptionObjSlice(nO)
-
 		dO := DialogueObj{Name: n, Dialogue: d, Question: q, Options: options}
 		return dO
 		/* case "3":
@@ -112,9 +114,33 @@ func optionsPrompt(dOS []DialogueObj) []DialogueObj {
 	}
 }
 func newOptionObjSlice(numOptions int) []OptionObj {
-	var oOS []OptionObj
+	reader := bufio.NewReader(os.Stdin)
+	var oOS []OptionObj = make([]OptionObj, numOptions) // NOTE: Could refactor to make array instead of slice
 	/* for i:=1;i<=numOptions;i++ {
-
+		prompt:=fmt.Sprintf("Option %v:")
+		text,_=getInputX()
 	} */
+	for index, _ := range oOS { // For each option in the newly-created slice
+		/*  NOTE: Can use 2nd answer from https://stackoverflow.com/questions/18926303/iterate-through-the-fields-of-a-struct-in-go
+		to loop through the fields of the current optionObj struct
+		Loop through and declare a new variable of same name to be the field's name,
+		and prompt for that field's value. Convert afterwards.
+		*/
+
+		fmt.Printf("For option %v: \n", index+1)
+		t, _ := getInputX("Enter option text: ", reader)
+		next, _ := getInputX("Enter id of the next scene: ", reader)
+		n, _ := strconv.Atoi(next)
+		luckChange, _ := getInputX("Enter option luck change: ", reader)
+		lc, _ := strconv.Atoi(luckChange)
+		maxLuck, _ := getInputX("Enter option min luck requirement: ", reader)
+		ml, _ := strconv.Atoi(maxLuck)
+
+		oOS[index].Text = t
+		oOS[index].Next = n
+		oOS[index].LuckChange = lc
+		oOS[index].MinLuck = ml
+
+	}
 	return oOS
 }
