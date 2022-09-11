@@ -10,6 +10,15 @@ import (
 	"strings"
 )
 
+/*
+TODO: Update README.md
+	TODO: Update userFlow Diagram
+TODO: Prompt for scene.Id first
+TODO: Put blank name + dialogue for questions (requires large refactoring)
+TODO: Add chapterObj struct
+	TODO: After entering each scene, return the "dialogue forks", all of the "Next" fields from the choices
+*/
+
 func getInputX(prompt string, r *bufio.Reader) (string, error) {
 	fmt.Print(prompt)
 	input, err := r.ReadString('\n')
