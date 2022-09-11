@@ -29,7 +29,7 @@ func newSceneObj(dOS []DialogueObj) (SceneObj, string) {
 }
 func newDialogueObjSlice() []DialogueObj {
 	var dOS []DialogueObj
-	dO1 := newDialogueObj() // To prompt for fields of the first dO, replace with dO1 := optionsPrompt(dOS)
+	dO1 := newDialogueObj()
 	dOS = append(dOS, dO1)
 	return dOS
 }
@@ -42,37 +42,46 @@ func newDialogueObj() DialogueObj {
 	reader := bufio.NewReader(os.Stdin)
 	n, _ := getInputX("Enter name: ", reader)
 	d, _ := getInputX("Enter dialogue: ", reader)
-
 	dO := addExtraFields(n, d)
-	// dO := DialogueObj{Name: n, Dialogue: d}
 	fmt.Println(dO, "Added to scene !")
 	return dO
 }
-func addExtraFields(name string, dialogue string) DialogueObj {
+func addExtraFields(n string, d string) DialogueObj {
 	reader := bufio.NewReader(os.Stdin)
-	numExtraFields, _ := getInputX("Enter number of extra fields: ", reader)
+	numExtraFields, _ := getInputX("Enter number of extra fields \n0 - name & dialogue only,\n1 - name, dialogue & background\n2 - name, dialogue, question, options,\n3 - name, dialogue, questions, options & background.\n: ", reader)
 	switch numExtraFields {
 	case "0":
-		dO := DialogueObj{Name: name, Dialogue: dialogue}
+		dO := DialogueObj{Name: n, Dialogue: d}
 		return dO
 	case "1":
 		bg, _ := getInputX("Enter background url: ", reader)
-		dO := DialogueObj{Name: name, Dialogue: dialogue, Background: bg}
+		dO := DialogueObj{Name: n, Dialogue: d, Background: bg}
 		return dO
-		/* 	case 2:
-		   		q,_:=("Enter question: ",reader)
-		   		numOptions,_:=("Enter how many options there should be: ",reader)
-		   		o:=createOptionsArr(numOptions)
-		   		return q,o
-		   	case 3:
+	case "2":
+		q, _ := getInputX("Enter question: ", reader)
+		numOptions, _ := getInputX("Enter how many options there should be (max 8): ", reader)
+		nO64, err := strconv.ParseInt(numOptions, 10, 0)
+		if err != nil {
+			fmt.Println("Must be a number")
+		}
+		nO := int(nO64)
+		if nO == 0 || nO > 8 {
+			addExtraFields(n, d)
+		}
+		options := newOptionObjSlice(nO)
+
+		dO := DialogueObj{Name: n, Dialogue: d, Question: q, Options: options}
+		return dO
+		/* case "3":
 		   		bg,_:=("Enter background url: ",reader)
 		   		q,_:=("Enter question: ",reader)
 		   		numOptions,_:=("Enter how many options there should be: ",reader)
-		   		o:=createOptionsArr(numOptions)
-		   		return bg,q,o */
+		   		options:=newOptionObjSlice(numOptions)
+				dO := DialogueObj{Name: n, Dialogue: d, Background: bg Question: q, Options:options}
+		   		return dO  */
 	default:
 		fmt.Println("Invalid option !")
-		return addExtraFields(name, dialogue)
+		return addExtraFields(n, d)
 	}
 }
 func main() {
@@ -101,4 +110,11 @@ func optionsPrompt(dOS []DialogueObj) []DialogueObj {
 		fmt.Println("Invalid option !")
 		return optionsPrompt(dOS)
 	}
+}
+func newOptionObjSlice(numOptions int) []OptionObj {
+	var oOS []OptionObj
+	/* for i:=1;i<=numOptions;i++ {
+
+	} */
+	return oOS
 }
