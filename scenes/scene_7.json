@@ -1,0 +1,14 @@
+{
+ "id": 7,
+ "Scene": [
+  {
+   "Name": "Aiko",
+   "Dialogue": "Greetings !"
+  },
+  {
+   "Name": "Aico",
+   "Dialogue": "Heyaaaaaa !",
+   "Background": "www.google.com"
+  }
+ ]
+}
