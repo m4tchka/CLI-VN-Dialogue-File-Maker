@@ -42,24 +42,20 @@ func newDialogueObj() DialogueObj {
 	reader := bufio.NewReader(os.Stdin)
 	n, _ := getInputX("Enter name: ", reader)
 	d, _ := getInputX("Enter dialogue: ", reader)
-	numExtraFields, _ := getInputX("How many additional fields ?", reader)
-	nEF64, err := strconv.ParseInt(numExtraFields, 10, 0)
-	if err != nil {
-		fmt.Println("Must be a number")
-	}
-	nEF := int(nEF64)
-	dO := addExtraFields(n, d, nEF)
+
+	dO := addExtraFields(n, d)
 	// dO := DialogueObj{Name: n, Dialogue: d}
 	fmt.Println(dO, "Added to scene !")
 	return dO
 }
-func addExtraFields(name string, dialogue string, numExtraFields int) DialogueObj {
+func addExtraFields(name string, dialogue string) DialogueObj {
 	reader := bufio.NewReader(os.Stdin)
+	numExtraFields, _ := getInputX("Enter number of extra fields: ", reader)
 	switch numExtraFields {
-	case 0:
+	case "0":
 		dO := DialogueObj{Name: name, Dialogue: dialogue}
 		return dO
-	case 1:
+	case "1":
 		bg, _ := getInputX("Enter background url: ", reader)
 		dO := DialogueObj{Name: name, Dialogue: dialogue, Background: bg}
 		return dO
@@ -75,7 +71,8 @@ func addExtraFields(name string, dialogue string, numExtraFields int) DialogueOb
 		   		o:=createOptionsArr(numOptions)
 		   		return bg,q,o */
 	default:
-		return addExtraFields(name, dialogue, numExtraFields)
+		fmt.Println("Invalid option !")
+		return addExtraFields(name, dialogue)
 	}
 }
 func main() {
