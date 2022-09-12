@@ -13,7 +13,9 @@ import (
 /*
 TODO: Update README.md
 	TODO: Update userFlow Diagram
-TODO: Prompt for scene.Id first
+TODO: Prompt for scene Id first
+TODO: Consider using the "make() function isntead of blank values
+	REVIEW:- "https://www.includehelp.com/golang/make-function-with-examples.aspx"
 TODO: Put blank name + dialogue for questions (requires large refactoring)
 TODO: Add chapterObj struct
 	TODO: After entering each scene, return the "dialogue forks", all of the "Next" fields from the choices
