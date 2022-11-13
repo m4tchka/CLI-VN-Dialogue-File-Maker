@@ -21,14 +21,14 @@ TODO: Add chapterObj struct
 	TODO: After entering each scene, return the "dialogue forks", all of the "Next" fields from the choices
 */
 
-func getInputX(prompt string, r *bufio.Reader) (string, error) {
+func getInputX(prompt string) (string, error) {
+	r := bufio.NewReader(os.Stdin)
 	fmt.Print(prompt)
 	input, err := r.ReadString('\n')
 	return strings.TrimSpace(input), err
 }
 func newSceneObj(dOS []DialogueObj) (SceneObj, string) {
-	reader := bufio.NewReader(os.Stdin)
-	id, _ := getInputX("Input an id for this scene: ", reader)
+	id, _ := getInputX("Input an id for this scene: ")
 	idNum64, err := strconv.ParseInt(id, 10, 0)
 	if err != nil {
 		fmt.Println("Must be a number")
@@ -50,27 +50,25 @@ func appendToSlice(prev []DialogueObj) []DialogueObj {
 	return newDOS
 }
 func newDialogueObj() DialogueObj {
-	reader := bufio.NewReader(os.Stdin)
-	n, _ := getInputX("Enter name: ", reader)
-	d, _ := getInputX("Enter dialogue: ", reader)
+	n, _ := getInputX("Enter name: ")
+	d, _ := getInputX("Enter dialogue: ")
 	dO := addExtraFields(n, d)
 	fmt.Println(dO, "Added to scene !")
 	return dO
 }
 func addExtraFields(n string, d string) DialogueObj {
-	reader := bufio.NewReader(os.Stdin)
-	numExtraFields, _ := getInputX("Enter number of extra fields \n0 - name & dialogue only,\n1 - name, dialogue & background,\n2 - name, dialogue, question & options,\n3 - name, dialogue, question, options & background.\n: ", reader)
+	numExtraFields, _ := getInputX("Enter number of extra fields \n0 - name & dialogue only,\n1 - name, dialogue & background,\n2 - name, dialogue, question & options,\n3 - name, dialogue, question, options & background.\n: ")
 	switch numExtraFields {
 	case "0":
 		dO := DialogueObj{Name: n, Dialogue: d}
 		return dO
 	case "1":
-		bg, _ := getInputX("Enter background url: ", reader)
+		bg, _ := getInputX("Enter background url: ")
 		dO := DialogueObj{Name: n, Dialogue: d, Background: bg}
 		return dO
 	case "2":
-		q, _ := getInputX("Enter question: ", reader)
-		numOptions, _ := getInputX("Enter how many options there should be (max 8): ", reader)
+		q, _ := getInputX("Enter question: ")
+		numOptions, _ := getInputX("Enter how many options there should be (max 8): ")
 		nO64, err := strconv.ParseInt(numOptions, 10, 0)
 		if err != nil {
 			fmt.Println("Must be a number")
@@ -85,13 +83,21 @@ func addExtraFields(n string, d string) DialogueObj {
 		options := newOptionObjSlice(nO)
 		dO := DialogueObj{Name: n, Dialogue: d, Question: q, Options: options}
 		return dO
-		/* case "3":
-		   		bg,_:=("Enter background url: ",reader)
-		   		q,_:=("Enter question: ",reader)
-		   		numOptions,_:=("Enter how many options there should be: ",reader)
-		   		options:=newOptionObjSlice(numOptions)
-				dO := DialogueObj{Name: n, Dialogue: d, Background: bg Question: q, Options:options}
-		   		return dO  */
+	case "3":
+		bg, _ := getInputX("Enter background url: ")
+		q, _ := getInputX("Enter question: ")
+		numOptions, _ := getInputX("Enter how many options there should be (max 8): ")
+		nO64, err := strconv.ParseInt(numOptions, 10, 0)
+		if err != nil {
+			fmt.Println("Must be a number")
+		}
+		nO := int(nO64)
+		if nO == 0 || nO > 8 {
+			return addExtraFields(n, d)
+		}
+		options := newOptionObjSlice(nO)
+		dO := DialogueObj{Name: n, Dialogue: d, Background: bg, Question: q, Options: options}
+		return dO
 	default:
 		fmt.Println("Invalid option !")
 		return addExtraFields(n, d)
@@ -109,8 +115,7 @@ func main() {
 	_ = ioutil.WriteFile("scenes/scene_"+id+".json", scene, 0644)
 }
 func optionsPrompt(dOS []DialogueObj) []DialogueObj {
-	reader := bufio.NewReader(os.Stdin)
-	opt, _ := getInputX("Choose option (a - add new dialogue entry, s - save scene): ", reader)
+	opt, _ := getInputX("Choose option (a - add new dialogue entry, s - save scene): ")
 	switch opt {
 	case "a":
 		new := appendToSlice(dOS)
@@ -125,13 +130,12 @@ func optionsPrompt(dOS []DialogueObj) []DialogueObj {
 	}
 }
 func newOptionObjSlice(numOptions int) []OptionObj {
-	reader := bufio.NewReader(os.Stdin)
 	var oOS []OptionObj = make([]OptionObj, numOptions) // NOTE: Could refactor to make array instead of slice
 	/* for i:=1;i<=numOptions;i++ {
 		prompt:=fmt.Sprintf("Option %v:")
 		text,_=getInputX()
 	} */
-	for index, _ := range oOS { // For each option in the newly-created slice
+	for index := range oOS { // For each option in the newly-created slice
 		/*  NOTE: Can use 2nd answer from https://stackoverflow.com/questions/18926303/iterate-through-the-fields-of-a-struct-in-go
 		to loop through the fields of the current optionObj struct
 		Loop through and declare a new variable of same name to be the field's name,
@@ -139,12 +143,12 @@ func newOptionObjSlice(numOptions int) []OptionObj {
 		*/
 
 		fmt.Printf("For option %v: \n", index+1)
-		t, _ := getInputX("Enter option text: ", reader)
-		next, _ := getInputX("Enter id of the next scene: ", reader)
+		t, _ := getInputX("Enter option text: ")
+		next, _ := getInputX("Enter id of the next scene: ")
 		n, _ := strconv.Atoi(next)
-		luckChange, _ := getInputX("Enter option luck change: ", reader)
+		luckChange, _ := getInputX("Enter option luck change: ")
 		lc, _ := strconv.Atoi(luckChange)
-		maxLuck, _ := getInputX("Enter option min luck requirement: ", reader)
+		maxLuck, _ := getInputX("Enter option min luck requirement: ")
 		ml, _ := strconv.Atoi(maxLuck)
 
 		oOS[index].Text = t
