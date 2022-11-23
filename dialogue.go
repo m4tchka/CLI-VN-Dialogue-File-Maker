@@ -2,9 +2,10 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"net/http"
 	"os"
 	"strconv"
 	"strings"
@@ -21,14 +22,18 @@ TODO: Add chapterObj struct
 	TODO: After entering each scene, return the "dialogue forks", all of the "Next" fields from the choices
 */
 
-func getInputX(prompt string) (string, error) {
+func getInput(prompt string) string {
+	// Function that prompts the user, with the string passed in, and returns a string
 	r := bufio.NewReader(os.Stdin)
 	fmt.Print(prompt)
 	input, err := r.ReadString('\n')
-	return strings.TrimSpace(input), err
+	if err != nil {
+		fmt.Println(err)
+	}
+	return strings.TrimSpace(input)
 }
 func newSceneObj(dOS []DialogueObj) (SceneObj, string) {
-	id, _ := getInputX("Input an id for this scene: ")
+	id := getInput("Input an id for this scene: ")
 	idNum64, err := strconv.ParseInt(id, 10, 0)
 	if err != nil {
 		fmt.Println("Must be a number")
@@ -50,25 +55,25 @@ func appendToSlice(prev []DialogueObj) []DialogueObj {
 	return newDOS
 }
 func newDialogueObj() DialogueObj {
-	n, _ := getInputX("Enter name: ")
-	d, _ := getInputX("Enter dialogue: ")
+	n := getInput("Enter name: ")
+	d := getInput("Enter dialogue: ")
 	dO := addExtraFields(n, d)
 	fmt.Println(dO, "Added to scene !")
 	return dO
 }
 func addExtraFields(n string, d string) DialogueObj {
-	numExtraFields, _ := getInputX("Enter number of extra fields \n0 - name & dialogue only,\n1 - name, dialogue & background,\n2 - name, dialogue, question & options,\n3 - name, dialogue, question, options & background.\n: ")
+	numExtraFields := getInput("Enter number of extra fields \n0 - name & dialogue only,\n1 - name, dialogue & background,\n2 - name, dialogue, question & options,\n3 - name, dialogue, question, options & background.\n: ")
 	switch numExtraFields {
 	case "0":
 		dO := DialogueObj{Name: n, Dialogue: d}
 		return dO
 	case "1":
-		bg, _ := getInputX("Enter background url: ")
+		bg := getInput("Enter background url: ")
 		dO := DialogueObj{Name: n, Dialogue: d, Background: bg}
 		return dO
 	case "2":
-		q, _ := getInputX("Enter question: ")
-		numOptions, _ := getInputX("Enter how many options there should be (max 8): ")
+		q := getInput("Enter question: ")
+		numOptions := getInput("Enter how many options there should be (max 8): ")
 		nO64, err := strconv.ParseInt(numOptions, 10, 0)
 		if err != nil {
 			fmt.Println("Must be a number")
@@ -84,9 +89,9 @@ func addExtraFields(n string, d string) DialogueObj {
 		dO := DialogueObj{Name: n, Dialogue: d, Question: q, Options: options}
 		return dO
 	case "3":
-		bg, _ := getInputX("Enter background url: ")
-		q, _ := getInputX("Enter question: ")
-		numOptions, _ := getInputX("Enter how many options there should be (max 8): ")
+		bg := getInput("Enter background url: ")
+		q := getInput("Enter question: ")
+		numOptions := getInput("Enter how many options there should be (max 8): ")
 		nO64, err := strconv.ParseInt(numOptions, 10, 0)
 		if err != nil {
 			fmt.Println("Must be a number")
@@ -105,17 +110,17 @@ func addExtraFields(n string, d string) DialogueObj {
 }
 func main() {
 	newDOS := newDialogueObjSlice()
-	// fmt.Printf("newDOS = %v, of type = %T\n", newDOS, newDOS)
 	finalDOS := optionsPrompt(newDOS)
-	// fmt.Printf("finalDOS = %v, of type: %T\n", finalDOS, finalDOS)
 	nSO, id := newSceneObj(finalDOS) // NOTE: Remove id later
 	// fmt.Printf("nSO = %v, of type: %T\n", nSO, nSO)
 	fmt.Printf("id = %v, of type: %T\n", id, id)
 	scene, _ := json.MarshalIndent(nSO, "", " ")
-	_ = ioutil.WriteFile("scenes/scene_"+id+".json", scene, 0644)
+	_ = os.WriteFile("scenes/scene_"+id+".json", scene, 0644)
+	fmt.Println("scene: ", scene)
+
 }
 func optionsPrompt(dOS []DialogueObj) []DialogueObj {
-	opt, _ := getInputX("Choose option (a - add new dialogue entry, s - save scene): ")
+	opt := getInput("Choose option (a - add new dialogue entry, s - save scene): ")
 	switch opt {
 	case "a":
 		new := appendToSlice(dOS)
@@ -143,12 +148,12 @@ func newOptionObjSlice(numOptions int) []OptionObj {
 		*/
 
 		fmt.Printf("For option %v: \n", index+1)
-		t, _ := getInputX("Enter option text: ")
-		next, _ := getInputX("Enter id of the next scene: ")
+		t := getInput("Enter option text: ")
+		next := getInput("Enter id of the next scene: ")
 		n, _ := strconv.Atoi(next)
-		luckChange, _ := getInputX("Enter option luck change: ")
+		luckChange := getInput("Enter option luck change: ")
 		lc, _ := strconv.Atoi(luckChange)
-		maxLuck, _ := getInputX("Enter option min luck requirement: ")
+		maxLuck := getInput("Enter option min luck requirement: ")
 		ml, _ := strconv.Atoi(maxLuck)
 
 		oOS[index].Text = t
@@ -158,4 +163,22 @@ func newOptionObjSlice(numOptions int) []OptionObj {
 
 	}
 	return oOS
+}
+func PostToAPI(s []byte) {
+	uri := "http://localhost:8081/scenes"
+	req, err := http.NewRequest("POST", uri, bytes.NewBuffer(s))
+	if err != nil {
+		panic(err)
+	}
+	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	// res, err := http.Post(uri, "application/json", bytes.NewBuffer(s))
+	// if err != nil {
+	// 	panic(err)
+	// }
+	fmt.Println(res)
 }
