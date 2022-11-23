@@ -1,0 +1,55 @@
+{
+ "id": 2,
+ "scene": [
+  {
+   "Name": "Aiko",
+   "Dialogue": "Hello ! Welcome to my humble abode !",
+   "Background": "cabin.jpg"
+  },
+  {
+   "Name": "Aico",
+   "Dialogue": "Dynamic Entry !!! Heyaaaa, I'm Aico !"
+  },
+  {
+   "Name": "Aiko",
+   "Dialogue": "Watch out Aico !"
+  },
+  {
+   "Name": "Aiko",
+   "Dialogue": "Uff ... Well anyway, would you like to have a picnic ?"
+  },
+  {
+   "Name": "Yeah please ! Sounds like fun !",
+   "Dialogue": "Yeah please ! Sounds like fun !"
+  },
+  {
+   "Name": "Aiko",
+   "Dialogue": "Alright ! But first, we should decide where to go ..."
+  },
+  {
+   "Name": "Aico",
+   "Dialogue": "Hmmm ...",
+   "Question": "Where should we go ?",
+   "Options": [
+    {
+     "Text": "Sit on the hilltop bench",
+     "Next": 2,
+     "LuckChange": 1,
+     "MinLuck": 0
+    },
+    {
+     "Text": "Lounge under the Great Tree",
+     "Next": 3,
+     "LuckChange": 4,
+     "MinLuck": 0
+    },
+    {
+     "Text": "Break by the lakeside",
+     "Next": 4,
+     "LuckChange": -1,
+     "MinLuck": 0
+    }
+   ]
+  }
+ ]
+}

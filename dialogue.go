@@ -116,8 +116,7 @@ func main() {
 	fmt.Printf("id = %v, of type: %T\n", id, id)
 	scene, _ := json.MarshalIndent(nSO, "", " ")
 	_ = os.WriteFile("scenes/scene_"+id+".json", scene, 0644)
-	fmt.Println("scene: ", scene)
-
+	PostToAPI(scene)
 }
 func optionsPrompt(dOS []DialogueObj) []DialogueObj {
 	opt := getInput("Choose option (a - add new dialogue entry, s - save scene): ")
@@ -165,6 +164,7 @@ func newOptionObjSlice(numOptions int) []OptionObj {
 	return oOS
 }
 func PostToAPI(s []byte) {
+	fmt.Println("---------------------POSTED TO API --------------------")
 	uri := "http://localhost:8081/scenes"
 	req, err := http.NewRequest("POST", uri, bytes.NewBuffer(s))
 	if err != nil {
@@ -181,4 +181,18 @@ func PostToAPI(s []byte) {
 	// 	panic(err)
 	// }
 	fmt.Println(res)
+
+	// uri := "http://localhost:8081/articles"
+	// res, err := http.Get(uri)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// fmt.Println(res)
+
+	// req.Header.Set("Content-Type", "application/json; charset=UTF-8")
+	// client := &http.Client{}
+	// res, err := client.Do(req)
+	// if err != nil {
+	// 	panic(err)
+	// }
 }
