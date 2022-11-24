@@ -34,11 +34,10 @@ func getInput(prompt string) string {
 }
 func newSceneObj(dOS []DialogueObj) (SceneObj, string) {
 	id := getInput("Input an id for this scene: ")
-	idNum64, err := strconv.ParseInt(id, 10, 0)
+	idNum, err := strconv.Atoi(id)
 	if err != nil {
 		fmt.Println("Must be a number")
 	}
-	idNum := int(idNum64)
 	var nSO SceneObj = SceneObj{Id: idNum, Scene: dOS}
 	fmt.Println(nSO)
 	return nSO, id
@@ -115,8 +114,15 @@ func main() {
 	// fmt.Printf("nSO = %v, of type: %T\n", nSO, nSO)
 	fmt.Printf("id = %v, of type: %T\n", id, id)
 	scene, _ := json.MarshalIndent(nSO, "", " ")
-	_ = os.WriteFile("scenes/scene_"+id+".json", scene, 0644)
-	PostToAPI(scene)
+	action := getInput("Save to DB ?\n[Y] Yes / [N] No : ")
+	if strings.ToLower(action) == "y" {
+		PostToAPI(scene)
+	}
+	action = getInput("Write to file ?\n[Y] Yes / [N] No : ")
+	if strings.ToLower(action) == "y" {
+		WriteToFile(scene, id)
+	}
+	fmt.Println("Exiting ...")
 }
 func optionsPrompt(dOS []DialogueObj) []DialogueObj {
 	opt := getInput("Choose option (a - add new dialogue entry, s - save scene): ")
@@ -163,6 +169,10 @@ func newOptionObjSlice(numOptions int) []OptionObj {
 	}
 	return oOS
 }
+func WriteToFile(s []byte, id string) {
+	_ = os.WriteFile("scenes/scene_"+id+".json", s, 0644)
+	fmt.Println("Scene successfully written to folder: /scenes")
+}
 func PostToAPI(s []byte) {
 	fmt.Println("---------------------POSTED TO API --------------------")
 	uri := "http://localhost:8081/scenes"
@@ -176,10 +186,6 @@ func PostToAPI(s []byte) {
 	if err != nil {
 		panic(err)
 	}
-	// res, err := http.Post(uri, "application/json", bytes.NewBuffer(s))
-	// if err != nil {
-	// 	panic(err)
-	// }
 	fmt.Println(res)
 
 	// uri := "http://localhost:8081/articles"

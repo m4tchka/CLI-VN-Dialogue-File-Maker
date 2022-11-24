@@ -21,6 +21,13 @@ Instead of making methods which directly mutate the struct variable that they're
 
 ## Usage
 
+<details>
+<summary><h2>View demo GIF</h2></summary>
+
+![Usage GIF](./readmeMedia/vnDialogueCLI.gif)
+
+</details>
+
 To launch, type into the terminal:
 
 ```bash
@@ -39,9 +46,3 @@ When the user has finished the last entry of the slice, they can may enter _"s"_
 
 Lastly, the user is prompted to enter an id for that scene (corresponding to which choice made at the end of the previous scene should lead to this new scene) and then the whole scene is _marshalled_ into JSON format, and outputted as a file with a name of *"scene_id.json"* into the _scenes_ folder.
 
-<details>
-<summary><h2>Demonstration</h2></summary>
-
-![Usage GIF](./readmeMedia/vnDialogueCLI.gif)
-
-</details>
