@@ -175,7 +175,7 @@ func WriteToFile(s []byte, id string) {
 }
 func PostToAPI(s []byte) {
 	fmt.Println("---------------------POSTED TO API --------------------")
-	uri := "http://localhost:8081/scenes"
+	uri := "http://vn-story-api-m4tchka.koyeb.app/scenes"
 	req, err := http.NewRequest("POST", uri, bytes.NewBuffer(s))
 	if err != nil {
 		panic(err)

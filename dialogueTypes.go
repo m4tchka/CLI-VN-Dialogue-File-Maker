@@ -24,6 +24,6 @@ type OptionObj struct {
 	// All fields mandatory
 	Text       string `json:"Text,omitempty" bson:"Text,omitempty"`
 	Next       int    `json:"Next,omitempty" bson:"Next,omitempty"`
-	LuckChange int    `json:"LuckChange,omitempty" bson:"LuckChange,omitempty"`
-	MinLuck    int    `json:"MinLuck,omitempty" bson:"MinLuck,omitempty"`
+	LuckChange int    `json:"LuckChange" bson:"LuckChange"`
+	MinLuck    int    `json:"MinLuck" bson:"MinLuck"`
 }
